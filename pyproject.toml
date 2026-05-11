@@ -1,35 +1,31 @@
 [project]
 name = "textbrowser"
 version = "0.1.0"
-description = "Add your description here"
+description = "A CLI tool that fetches web pages headlessly and converts them to Markdown"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "markdownify>=0.14.1",
+    "playwright>=1.50.0",
+]
+
+[dependency-groups]
+dev = [
     "autopep8>=2.3.2",
     "flake8>=7.3.0",
     "isort>=8.0.1",
     "mypy>=2.1.0",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
     "rich>=15.0.0",
 ]
 
-[dependency-groups]
-dev = [
-    "pytest>=9.0.3",
-    "pytest-cov>=7.1.0",
-]
-## LLM UPDATE THIS
 [project.scripts]
-name-of-app = "name-of-app.__main__:main"
-description = "UPDATE"
+textbrowser = "textbrowser.cli:main"
 
-readme = "README.md"
-requires-python = ">=3.11"
-
-[dependency-groups]
-dev = [
-    "pytest>=9.0.2",
-    "pytest-cov>=7.0.0",
-]
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
 
 [tool.pycodestyle]
 max-line-length = 120
@@ -43,9 +39,10 @@ line_length = 120
 [tool.coverage.run]
 omit = ["*/test/*"]
 
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [tool.uv]
 package = true
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: marks tests as integration tests (deselect with '-m \"not integration\"')",
+]
