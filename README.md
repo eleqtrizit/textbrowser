@@ -9,7 +9,7 @@ A CLI tool that fetches web pages headlessly using Playwright and converts them 
 npm install -g playwright@latest
 
 # Install Playwright browser
-playwright install chromium
+playwright install 
 
 # Install text browser
 uv tool install https://github.com/eleqtrizit/textbrowser.git
