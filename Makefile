@@ -14,8 +14,8 @@ test:  ## Run tests
 
 lint:  ## Run linters
 	python -m compileall -q . # checks for errors
-	flake8 *.py
-	mypy *.py
+	flake8 textbrowser/ tests/
+	mypy textbrowser/ tests/
 
 format:  ## Format code
 	autopep8 -a  --in-place --recursive .

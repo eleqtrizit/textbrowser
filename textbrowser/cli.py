@@ -1,10 +1,43 @@
 """CLI module for textbrowser - fetches web pages and converts to Markdown."""
 
 import argparse
+import subprocess
 import sys
+from pathlib import Path
 
 from markdownify import markdownify as md
 from playwright.sync_api import sync_playwright
+
+
+def ensure_playwright_browsers() -> None:
+    """Ensure Playwright browsers are installed, installing them if missing.
+
+    :raises RuntimeError: If browser installation fails
+    """
+    try:
+        # Quick check: try to launch Firefox headlessly
+        with sync_playwright() as p:
+            p.firefox.launch(headless=True).close()
+    except Exception as e:
+        error_msg = str(e)
+        if "Executable doesn't exist" in error_msg or "playwright install" in error_msg.lower():
+            print("Playwright browsers not found. Installing Firefox...", file=sys.stderr)
+            try:
+                # Get the playwright executable from the same environment
+                playwright_path = Path(sys.executable).parent / "playwright"
+                subprocess.run(
+                    [str(playwright_path), "install", "firefox"],
+                    check=True,
+                    capture_output=False,
+                )
+                print("Firefox browser installed successfully.", file=sys.stderr)
+            except subprocess.CalledProcessError as install_err:
+                raise RuntimeError(
+                    f"Failed to install Playwright browsers. "
+                    f"Run: playwright install firefox\n{install_err.stderr}"
+                ) from install_err
+        else:
+            raise
 
 
 def fetch_html(url: str) -> str:
@@ -58,11 +91,23 @@ def main() -> None:
         type=str,
         help="Output file path (default: stdout)",
     )
+    parser.add_argument(
+        "--install-browsers",
+        action="store_true",
+        help="Install Playwright browsers and exit",
+    )
 
     args = parser.parse_args()
 
+    if args.install_browsers:
+        print("Installing Playwright browsers...", file=sys.stderr)
+        ensure_playwright_browsers()
+        print("Done. You can now use textbrowser.", file=sys.stderr)
+        return
+
     try:
         if args.url:
+            ensure_playwright_browsers()
             html = fetch_html(args.url)
         else:
             html = sys.stdin.read()

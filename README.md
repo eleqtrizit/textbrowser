@@ -5,15 +5,18 @@ A CLI tool that fetches web pages headlessly using Playwright and converts them 
 ## Installation
 
 ```bash
-# Install Playwright
-npm install -g playwright@latest
-
-# Install Playwright browser
-playwright install 
-
-# Install text browser
+# Install textbrowser
 uv tool install https://github.com/eleqtrizit/textbrowser.git
+
+# Install Playwright browsers (automatic on first use, or manual):
+textbrowser --install-browsers
+
+# Install system dependencies for headless operation (Linux only)
+# This is required on headless servers and CI environments
+playwright install-deps firefox
 ```
+
+**Note:** Browsers are installed automatically on first use. Use `--install-browsers` to pre-install.
 
 ## Usage
 
