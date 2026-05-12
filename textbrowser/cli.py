@@ -17,7 +17,7 @@ def fetch_html(url: str) -> str:
     :raises RuntimeError: If the page fails to load
     """
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.firefox.launch(headless=True)
         page = browser.new_page()
         response = page.goto(url)
 

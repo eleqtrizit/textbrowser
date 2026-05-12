@@ -71,7 +71,7 @@ class TestFetchHtml:
         # Using a simple, reliable test page
         url = "https://example.com"
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = p.firefox.launch(headless=True)
             page = browser.new_page()
             response = page.goto(url)
             assert response is not None
