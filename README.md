@@ -5,6 +5,9 @@ A CLI tool that fetches web pages headlessly using Playwright and converts them 
 ## Installation
 
 ```bash
+# Install Playwright
+npm install -g playwright@latest
+
 # Install Playwright browser
 playwright install chromium
 
